@@ -1,5 +1,6 @@
-name: Diesel Guard
+name: Diesel Guard Action
 description: Check Postgres migrations for dangerous patterns
+author: ayarotsky
 branding:
   icon: shield
   color: red
