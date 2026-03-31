@@ -1,11 +1,9 @@
 name: Release
 
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Version to release (e.g. 1.0.0)'
-        required: true
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
   release:
@@ -15,14 +13,13 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Tag and release
+      - name: Update floating major tag and create GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git tag "v${{ github.event.inputs.version }}"
-          git push origin "v${{ github.event.inputs.version }}"
-          gh release create "v${{ github.event.inputs.version }}" \
-            --title "v${{ github.event.inputs.version }}" \
-            --notes "Uses diesel-guard v${{ github.event.inputs.version }} binaries."
+          MAJOR="v$(echo '${{ github.ref_name }}' | cut -d. -f1)"
+          git tag -f "$MAJOR"
+          git push origin "$MAJOR" --force
+          gh release create "${{ github.ref_name }}" \
+            --title "${{ github.ref_name }}" \
+            --notes "Uses diesel-guard ${{ github.ref_name }} binaries."
