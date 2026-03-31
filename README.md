@@ -18,9 +18,10 @@ framework = "diesel"  # or "sqlx"
 
 ## Inputs
 
-| Input  | Description                                          | Required | Default       |
-|--------|------------------------------------------------------|----------|---------------|
-| `path` | Path to migrations directory or a single `.sql` file | No       | `migrations/` |
+| Input       | Description                                                     | Required | Default       |
+|-------------|-----------------------------------------------------------------|----------|---------------|
+| `path`      | Path to migrations directory or a single `.sql` file            | No       | `migrations/` |
+| `version`   | diesel-guard binary version to install (e.g. `0.9.0`)           | No       | `latest`      |
 
 ## Examples
 
@@ -40,6 +41,16 @@ steps:
   - uses: ayarotsky/diesel-guard-action@v1
     with:
       path: db/migrate/
+```
+
+**Pin the diesel-guard binary version:**
+
+```yaml
+steps:
+  - uses: actions/checkout@v6
+  - uses: ayarotsky/diesel-guard-action@v1
+    with:
+      version: '0.9.0'
 ```
 
 
